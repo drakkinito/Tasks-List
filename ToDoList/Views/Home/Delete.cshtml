@@ -1,0 +1,25 @@
+﻿@model ToDoList.Models.TaskItem
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<div class="delete-task">
+    <div class="delete-task__item">
+        <h2>Delete</h2>
+
+        <h3>Are you sure you want to delete this?</h3>
+
+        <div>
+            @*<section><b>@Html.DisplayNameFor(model => model.Title):</b> @Html.DisplayFor(model => model.Title)</section>
+            <section><b>@Html.DisplayNameFor(model => model.ReleaseDate):</b> @Html.DisplayFor(model => model.ReleaseDate)</section>
+            <section><b>@Html.DisplayNameFor(model => model.Text):</b> @Html.DisplayFor(model => model.Text)</section>*@
+        </div>
+
+        <form method="post" asp-action="DeleteConfirmed">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="def-color" /> 
+            <a asp-action="Index">Back to List</a>
+        </form>
+    </div>
+    
+</div>

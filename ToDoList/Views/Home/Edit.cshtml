@@ -1,0 +1,49 @@
+﻿@model ToDoList.Models.TaskItem
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="edit-task">
+    <div class="edit-task__item">
+        <h2>Edit</h2>
+        <input type="hidden" data-val="true" data-val-required="The ID field is required." id="Id" name="Id" value="7" />
+        <form asp-action="Edit" id="newTaskForm">
+            <div class="form-group">
+                <label asp-for="Title" ></label>
+                <input asp-for="Title" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Text" data-title="label"></label>
+                <textarea asp-for="Text"></textarea>
+            </div>
+
+            <div>
+                <input type="submit" value="Save" class="def-color" />
+            </div>
+        </form>
+
+        <div class="go-to-back">
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#newTaskForm").validate({
+            rules: {
+                Title: {
+                    required: true
+                },
+                Text: {
+                    required: true
+                }
+            },
+            messages: {
+                Title: "Required Field",
+                Text: "Required Field"
+            }
+        });
+    </script>
+}

@@ -1,0 +1,305 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+input[type="text"], input[type="submit"] {
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+form input[type="submit"]:hover {
+    color: #525252;
+    background: #fada81;
+    transition: .3s ease .1s;
+}
+
+.def-color {
+    color: #808080;
+    background: #f1f3f4;
+}
+
+
+
+header {
+    height: 10vh;
+    margin: 0 auto;
+    width: 900px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    border-bottom: 1px solid #fada81;
+}
+
+    header img {
+        float: left;
+        width: 48px;
+        height: 48px;
+        padding: 8px;
+        cursor: pointer;
+    }
+
+    header h1 {
+        float: left;
+        margin: 18px 10px;
+        color: #808080;
+        font-weight: 600;
+        font-family: Arial;
+        cursor: pointer;
+        font-size: 26px;
+    }
+
+    header a:nth-child(3) {
+        float: right;
+        color: #80809e;
+        font-size: medium;
+        font-family: Arial;
+        padding: 11px;
+        text-decoration: none;
+        border-radius: 5px;
+        margin: 14px 8px;
+        background: #fada81a1;
+    }
+        header a:nth-child(3):hover {
+            color: #444444;
+            transition: .3s ease;
+            background: #fada81;
+        }
+
+        header .search {
+            position: relative;
+            float: right;
+        }
+
+        header .search span {
+            position: absolute;
+            left: 25px;
+            top: 20px;
+            background: url(../images/search-icon.png) no-repeat;
+            width: 20px;
+            height: 20px;
+            color: gray;
+            padding: 3px;
+        }
+
+        header .search input {
+            width: 391px;
+            height: 40px;
+            margin: 12px 12px;
+            float: right;
+            padding-left: 50px;
+            font-size: 16px;
+        }
+
+            header .search input[type="submit"] {
+                width: 80px;
+                padding: 0;
+                margin: 12px 0px;
+                cursor: pointer;
+            }
+
+            header .search input::before {
+                content: "";
+                background-image: url("https://image.flaticon.com/icons/svg/126/126474.svg");
+            }
+
+.new-task, .list-tasks, .edit-task, .delete-task {
+    width: 900px;
+    margin: 0 auto;
+    font-family: Arial;
+}
+
+    .new-task form {
+        text-align: center;
+        margin: 60px 200px 20px;
+        position: relative
+    }
+
+        .new-task form input[type="text"] {
+            width: 480px;
+            height: 40px;
+            box-shadow: 0 0 8px 0px rgba(0,0,0,0.5);
+            padding-left: 20px;
+            margin-bottom: 3px;
+        }
+
+        .new-task form textarea {
+            display: block;
+            margin: 25px auto 3px;
+            width: 460px;
+            height: 90px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0 0 8px 0px rgba(0,0,0,0.5);
+            font-size: 15px;
+            font-family: Arial;
+        }
+
+    .new-task input[type=submit] {
+        width: 120px;
+        height: 46px;
+        margin: 20px 0;
+        background: #f1f3f4;
+        font-size: 16px;
+        color: #808080;
+        cursor: pointer;
+    }
+
+    .new-task form label.error {
+        position: absolute;
+        color: red;
+        font-size: 14px;
+        display: table;
+    }
+
+
+.edit-task__item {
+    width: 500px;
+    margin: 0 auto;
+    padding-top: 50px;
+}
+
+    .edit-task__item h2 {
+        color: #3e3e3e;
+        font-weight: 400;
+        cursor: default;
+    }
+
+    .edit-task__item form label {
+        display: block;
+        font-size: 18px;
+        padding: 4px 0;
+    }
+
+        .edit-task__item form label[data-title="label"] {
+            margin-top: 20px;
+        }
+
+    .edit-task__item form input {
+        width: 94%;
+        height: 35px;
+        padding: 0 15px;
+        color: #2d2d2d;
+        border: 1px solid #8080807a;
+    }
+
+    .edit-task__item form textarea {
+        width: 94%;
+        height: 100px;
+        border-radius: 5px;
+        border: 1px solid #8080807a;
+        padding: 8px 15px;
+        color: #2d2d2d;
+        font-size: 14px;
+        font-family: Arial;
+    }
+
+    .edit-task__item form label.error {
+        position: absolute;
+        color: red;
+        font-size: 14px;
+        display: table;
+    }
+
+    .edit-task__item input[type="submit"] {
+        width: 100%;
+        border-radius: 5px;
+        border: none;
+        margin: 30px 0px 15px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .edit-task__item .go-to-back {
+        text-align: center;
+        margin: 10px 0px;
+        font-size: 12px;
+    }
+
+        .edit-task__item .go-to-back a {
+            color: #424040;
+        }
+
+.list-tasks .list-item {
+    box-shadow: 0 0 4px 0px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+}
+
+    .list-tasks .list-item h3 {
+        padding: 15px 20px 0 20px;
+        margin: 0;
+    }
+
+    .list-tasks .list-item i {
+        font-size: 12px;
+        color: grey;
+        padding-left: 20px;
+    }
+
+    .list-tasks .list-item pre {
+        padding: 10px 20px;
+        margin: 5px 0 5px 20px;
+        display: inline-block;
+        border-left: 1px solid #b7b7b7;
+    }
+
+    .list-tasks .list-item .list-item__link {
+        padding: 0 20px 10px;
+    }
+
+        .list-tasks .list-item .list-item__link a {
+            color: #2196F3;
+            font-size: small;
+        }
+
+            .list-tasks .list-item .list-item__link a:nth-child(2) {
+                padding-left: 8px;
+            }
+
+.delete-task__item {
+    margin: 0 auto;
+    width: 500px;
+}
+
+    .delete-task__item h3 {
+        color: white;
+        background: #f1b006;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        cursor: default;
+    }
+
+    .delete-task__item div section {
+        padding: 8px 0;
+    }
+
+    .delete-task__item form {
+        margin-top: 20px;
+    }
+
+    .delete-task__item input[type="submit"] {
+        padding: 10px;
+        cursor: pointer;
+        color: #808080;
+    }
+
+    .delete-task__item form a {
+        color: #424040;
+        font-size: 12px;
+        padding-left: 15px;
+    }
+
+
+footer {
+    position: relative;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #545454;
+    font-family: Arial;
+    font-size: 12px;
+}

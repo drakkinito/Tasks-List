@@ -1,0 +1,52 @@
+﻿@model IEnumerable<ToDoList.Models.TaskItem>
+
+@{
+    ViewData["Title"] = "List";
+}
+<div class="new-task">
+    <form asp-antiforgery="true" asp-action="Create" asp-controller="Home" id="newTaskForm">
+        <input type="text" placeholder="Write your task title..." name="Title" />
+        <textarea placeholder="Write your text..." name="Text"></textarea>
+        <input type="text" name="ReleaseDate" value="@DateTime.Now" style="display:none" />
+
+        <input type="submit" class="add-task" value="Add new task" />
+    </form>
+</div>
+<div class="list-tasks">
+    @foreach (var item in Model)
+    {
+        <div class="list-item">
+            <h3>@item.Title</h3>
+
+            <div>
+                <i>@item.ReleaseDate</i>
+                <br />
+                <pre>@item.Text</pre>
+                <div class="list-item__link">
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#newTaskForm").validate({
+            rules: {
+                Title: {
+                    required: true
+                },
+                Text: {
+                    required: true
+                }
+            },
+            messages: {
+                Title: "Required Field",
+                Text: "Required Field"
+            }
+        });
+    </script>
+}
