@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using ToDoList.Data;
 using ToDoList.Models;
 using ToDoList.ViewModels;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 using System;
+using System.Text;
 
 namespace ToDoList.Controllers
 {
@@ -41,9 +41,9 @@ namespace ToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                string password = HasPassword(model.Password);
 
-                User user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == password);
+                User user = await _db.Users
+                    .FirstOrDefaultAsync(u => u.Email == model.Email && VerifyHashedPassword(model.Password ,u.Password));
                 if (user != null)
                 {
 
@@ -81,7 +81,7 @@ namespace ToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
-                string password = HasPassword(model.Password);
+                string password = HashPassword(model.Password, model.Email);
 
                 User user = await _db.Users.FirstOrDefaultAsync(u => u.Email == model.Email);
 
@@ -135,20 +135,47 @@ namespace ToDoList.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public string HasPassword(string password)
+        public string HashPassword(string password, string user)
         {
-            // generate a 128-bit salt using a secure PRNG
-            byte[] salt = new byte[128 / 8];
+            const int Pbkdf2Iterations = 1000;
+            var cryptoProvider = new RNGCryptoServiceProvider();
+            byte[] salt = Encoding.UTF8.GetBytes(user);
 
-            // derive a 256-bit subkey (use HMACSHA1 with 10,000 iterations)
-            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA1,
-                iterationCount: 10000,
-                numBytesRequested: 256 / 8));
+            cryptoProvider.GetBytes(salt);
 
-            return hashed;
+            var hash = GetPbkdf2Bytes(password, salt, Pbkdf2Iterations, 20);
+            return Pbkdf2Iterations + ":" +
+                   Convert.ToBase64String(salt) + ":" +
+                   Convert.ToBase64String(hash);
+        }
+
+        public bool VerifyHashedPassword(string password, string correctHash)
+        {
+            char[] delimiter = { ':' };
+            var split = correctHash.Split(delimiter);
+            var iterations = Int32.Parse(split[0]);
+            var salt = Convert.FromBase64String(split[1]);
+            var hash = Convert.FromBase64String(split[2]);
+
+            var testHash = GetPbkdf2Bytes(password, salt, iterations, hash.Length);
+            return SlowEquals(hash, testHash);
+        }
+
+        private static bool SlowEquals(byte[] a, byte[] b)
+        {
+            var diff = (uint)a.Length ^ (uint)b.Length;
+            for (int i = 0; i < a.Length && i < b.Length; i++)
+            {
+                diff |= (uint)(a[i] ^ b[i]);
+            }
+            return diff == 0;
+        }
+
+        private static byte[] GetPbkdf2Bytes(string password, byte[] salt, int iterations, int outputBytes)
+        {
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt);
+            pbkdf2.IterationCount = iterations;
+            return pbkdf2.GetBytes(outputBytes);
         }
     }
 }
