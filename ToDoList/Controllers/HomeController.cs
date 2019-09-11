@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -19,34 +20,56 @@ namespace ToDoList.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Index(string Search)
+        //public async Task<IActionResult> Index(string Search)
+        public async Task<IActionResult> Index(int id)
         {
-            //var id = Convert.ToInt32(HttpContext.Request.Cookies["user_id"]);
-           var items = from m in _context.Tasks
-                       .Where(p=> p.UserId == UserId)
-                       .OrderByDescending(x => x.Id)
-                       select m;
+            HttpContext.Response.Cookies.Append("group_id", $"{id}");
 
-            if (!String.IsNullOrEmpty(Search))
+            var taskItems = _context.Tasks
+                .Where(p => p.GroupItemId == id)
+                .OrderByDescending(x => x.Id);
+
+            var groupItems = _context.UsersGroups
+                        .Include(c => c.GroupItem)
+                        .Where(p => p.UserId == UserId).ToList();
+
+            User nameUser = _context.Users.FirstOrDefault(x => x.Id == UserId);
+            if (id != 0)
             {
-                items = items.Where(s => s.Title.Contains(Search));
+                UsersGroup usersGroup = _context.UsersGroups.FirstOrDefault(x => x.GroupItemId == id);
+
+                ViewData["GroupId"] = usersGroup.GroupItemId;
             }
 
-            return View(await items.ToListAsync());
+            ViewData["UserEmail"] = nameUser.Email;
+
+            return View(new ModelGroupAndTask
+            {
+                Tasks = taskItems,
+                UsersGroups = groupItems
+            });
         }
 
-        //post: Create
-        public async Task<IActionResult> Create(TaskItem list)
+        // get: Create
+        public async Task<IActionResult> Create()
+        {
+            return View();
+        }
+
+        // post: Create
+        public async Task<IActionResult> CreateNewTask(TaskItem list)
         {
             //var id = Convert.ToInt32(HttpContext.Request.Cookies["user_id"]);
+            string groupId = HttpContext.Request.Cookies["group_id"];
             if (list != null)
             {
-                list.UserId = UserId;
-                _context.Tasks.Add(list);
+                list.GroupItemId = Convert.ToInt32(groupId);
+
+                await _context.Tasks.AddAsync(list);
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Home", new { id = groupId });
         }
 
         // get: Edit
@@ -113,5 +136,15 @@ namespace ToDoList.Controllers
 
             return RedirectToAction(nameof(Index));
         }
+
+        //get show group
+        //public async Task<IActionResult> Show(int id)
+        //{
+        //    var a = id;
+
+        //    return View();
+        //}
+
+
     }
 }

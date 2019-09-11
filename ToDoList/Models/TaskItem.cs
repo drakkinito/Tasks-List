@@ -11,10 +11,11 @@ namespace ToDoList.Models
 
         [Required(ErrorMessage = "Empty Text")]
         public string Text { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
 
-        public int UserId { get; set; }
-        public User User { get; set; }
+        public int GroupItemId { get; set; }
+        public GroupItem GroupItem { get; set; }
     }
 }

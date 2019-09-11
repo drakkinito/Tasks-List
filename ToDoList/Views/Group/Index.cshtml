@@ -1,0 +1,28 @@
+﻿@model IEnumerable<ToDoList.Models.User>
+
+@{
+    ViewData["Title"] = "Group";
+}
+
+<div class="create-group">
+    <form asp-action="CreateGroup" method="post" asp-controller="Group">
+        @*<label asp-for="Item1.Name">Name:</label>
+            <input type="text" name="Name" placeholder="new group" asp-for="Item1.Name" />
+
+            <label asp-for="Item1.IsPrivate">Public:</label>
+            @Html.RadioButtonFor(x => x.Item1.IsPrivate, false)
+            <label asp-for="Item1.IsPrivate">Private:</label>
+            @Html.RadioButtonFor(x => x.Item1.IsPrivate, true)
+            <input type="text" name="UserRole" value="Admin" />*@
+
+
+        <select>
+            @foreach (var user in Model)
+            {
+                <option value="value">@user.Email</option>
+            }
+        </select>
+
+        <input type="submit" value="Add" />
+    </form>
+</div>

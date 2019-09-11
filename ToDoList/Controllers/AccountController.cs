@@ -12,6 +12,7 @@ using ToDoList.ViewModels;
 using System.Security.Cryptography;
 using System;
 using System.Text;
+using System.Linq;
 
 namespace ToDoList.Controllers
 {
@@ -41,18 +42,20 @@ namespace ToDoList.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 User user = await _db.Users
-                    .FirstOrDefaultAsync(u => u.Email == model.Email && VerifyHashedPassword(model.Password ,u.Password));
+                        .FirstOrDefaultAsync(u =>
+                            u.Email == model.Email && VerifyHashedPassword(model.Password, u.Password));
+
+
                 if (user != null)
                 {
-
                     await Authenticate(user);
+                    UsersGroup usersGroup = _db.UsersGroups
+                            .FirstOrDefault(x => x.GroupItemId == user.Id);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home", new { id = usersGroup.GroupItemId });
 
                     //HttpContext.Response.Cookies.Append("user_id", $"{user.Id}");
-
                     //await Authenticate(model.Email);
 
                 }
@@ -93,7 +96,11 @@ namespace ToDoList.Controllers
 
                     await Authenticate(user); // аутентификация
 
-                    return RedirectToAction("Index", "Home");
+                    InitializeData.Initialize(_db, user);
+
+                    //HttpContext.Response.Cookies.Append("user_id", $"{user.Id}");
+
+                    return RedirectToAction("Login", "Account");
                 }
                 else
                 {

@@ -1,19 +1,99 @@
-﻿@model IEnumerable<ToDoList.Models.TaskItem>
+﻿@model ToDoList.Models.ModelGroupAndTask;
+@using Microsoft.AspNetCore.Html
 
 @{
     ViewData["Title"] = "List";
 }
-<div class="new-task">
-    <form asp-antiforgery="true" asp-action="Create" asp-controller="Home" id="newTaskForm">
-        <input type="text" placeholder="Write your task title..." name="Title" />
-        <textarea placeholder="Write your text..." name="Text"></textarea>
-        <input type="text" name="ReleaseDate" value="@DateTime.Now" style="display:none" />
 
-        <input type="submit" class="add-task" value="Add new task" />
-    </form>
+<div class="main-content">
+    <div class="nav-content">
+        @ViewData["UserEmail"]
+        <div class="nav-btn">
+            <a asp-action="Index" asp-controller="Group" asp-route-id="">
+                <input type="submit" value="Add new group" />
+            </a>
+        </div>
+        <ul>
+            <li>
+                @foreach (var groups in Model.UsersGroups)
+                {
+                    if (groups.GroupItem.IsPrivate == null)
+                    {
+                        <div>
+                            <a asp-action="Index" asp-route-id="@groups.GroupItem.Id" asp-controller="Home">@groups.GroupItem.Name</a>
+                        </div>
+                    }
+                }
+            </li>
+            <li>
+                <h5>Private group:</h5>
+                @foreach (var groups in Model.UsersGroups)
+                {
+                    if (groups.GroupItem.IsPrivate == true)
+                    {
+                        <div>
+                            <a asp-action="Index" asp-route-id="@groups.GroupItem.Id" asp-controller="Home">
+                                @groups.GroupItem.Name
+                            </a>
+                        </div>
+                    }
+                }
+            </li>
+            <li>
+                <h5>Public group:</h5>
+                @foreach (var groups in Model.UsersGroups)
+                {
+                    if (groups.GroupItem.IsPrivate == false)
+                    {
+                        <div>
+                            <a asp-action="Index" asp-route-id="@groups.GroupItem.Id" asp-controller="Home">
+                                @groups.GroupItem.Name
+                            </a>
+                        </div>
+                    }
+                }
+            </li>
+        </ul>
+    </div>
+    <div class="task-content">
+        <div class="task-list">
+            <h2>My Tasks</h2>
+            <a asp-action="Create" asp-controller="Home">
+                <input type="submit" value="Add new task" />
+            </a>
+
+            @foreach (var tasks in Model.Tasks)
+            {
+                <div class="list-item">
+                    <h3>@tasks.Title</h3>
+                    <div>
+                        <i>@tasks.ReleaseDate</i>
+                        <br />
+                        <pre>@tasks.Text</pre>
+                        <div class="list-item__link">
+                            <a asp-action="" asp-route-id="">Edit</a>
+                            <a asp-action="" asp-route-id="">Delete</a>
+                        </div>
+                    </div>
+                </div>
+                //}
+            }
+        </div>
+        <div class="list-users">WDASDDS</div>
+    </div>
 </div>
-<div class="list-tasks">
-    @foreach (var item in Model)
+
+@*<div class="new-task">
+        <form asp-antiforgery="true" asp-action="Create" asp-controller="Home" id="newTaskForm">
+            <input type="text" placeholder="Write your task title..." name="Title" />
+            <textarea placeholder="Write your text..." name="Text"></textarea>
+            <input type="text" name="ReleaseDate" value="@DateTime.Now" style="display:none" />
+
+            <input type="submit" class="add-task" value="Add new task" />
+        </form>
+    </div>
+    <div class="list-tasks">
+        @foreach (var item in Model)
     {
         <div class="list-item">
             <h3>@item.Title</h3>
@@ -28,9 +108,9 @@
                 </div>
             </div>
         </div>
-    }
+        }
 
-</div>
+    </div>*@
 
 @section Scripts {
     <script type="text/javascript">

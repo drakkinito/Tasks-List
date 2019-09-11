@@ -23,7 +23,8 @@ form input[type="submit"]:hover {
 
 
 header {
-    height: 10vh;
+    /*height: 10vh;*/
+    height: 25vh;
     margin: 0 auto;
     width: 900px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -57,7 +58,7 @@ header {
         text-decoration: none;
         border-radius: 5px;
         margin: 14px 8px;
-        background: #fada81a1;
+        background-color: #fada81a1;
     }
         header a:nth-child(3):hover {
             color: #444444;
@@ -102,7 +103,7 @@ header {
                 background-image: url("https://image.flaticon.com/icons/svg/126/126474.svg");
             }
 
-.new-task, .list-tasks, .edit-task, .delete-task {
+.new-task, .list-tasks, .edit-task, .delete-task, .create-group {
     width: 900px;
     margin: 0 auto;
     font-family: Arial;

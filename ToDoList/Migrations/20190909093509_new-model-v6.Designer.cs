@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList.Data;
 
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ListContext))]
-    partial class ListContextModelSnapshot : ModelSnapshot
+    [Migration("20190909093509_new-model-v6")]
+    partial class newmodelv6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,9 +27,9 @@ namespace ToDoList.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("IsPrivate");
-
                     b.Property<string>("Name");
+
+                    b.Property<bool>("Private");
 
                     b.Property<string>("UserRole");
 

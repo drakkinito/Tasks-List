@@ -10,8 +10,8 @@ using ToDoList.Data;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ListContext))]
-    [Migration("20190826083307_ChangeListsToTasks")]
-    partial class ChangeListsToTasks
+    [Migration("20190909093614_new-model-v7")]
+    partial class newmodelv7
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,11 +21,30 @@ namespace ToDoList.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ToDoList.Models.GroupItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name");
+
+                    b.Property<bool>("Private");
+
+                    b.Property<string>("UserRole");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups");
+                });
+
             modelBuilder.Entity("ToDoList.Models.TaskItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GroupItemId");
 
                     b.Property<DateTime>("ReleaseDate");
 
@@ -35,11 +54,9 @@ namespace ToDoList.Migrations
                     b.Property<string>("Title")
                         .IsRequired();
 
-                    b.Property<int>("UserId");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("GroupItemId");
 
                     b.ToTable("Tasks");
                 });
@@ -59,10 +76,42 @@ namespace ToDoList.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ToDoList.Models.UsersGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("GroupItemId");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GroupItemId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsersGroups");
+                });
+
             modelBuilder.Entity("ToDoList.Models.TaskItem", b =>
                 {
+                    b.HasOne("ToDoList.Models.GroupItem", "GroupItem")
+                        .WithMany("TaskItems")
+                        .HasForeignKey("GroupItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ToDoList.Models.UsersGroup", b =>
+                {
+                    b.HasOne("ToDoList.Models.GroupItem", "GroupItem")
+                        .WithMany("UsersGroups")
+                        .HasForeignKey("GroupItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ToDoList.Models.User", "User")
-                        .WithMany("TaskItem")
+                        .WithMany("UsersGroups")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

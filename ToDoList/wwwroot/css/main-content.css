@@ -1,0 +1,83 @@
+﻿a {
+    text-decoration: none;
+    color: blue;
+}
+
+.main-content {
+    width: 900px;
+    margin: 10px auto;
+    background: #e0e0e0;
+}
+
+    .main-content .nav-content {
+        width: 24%;
+        float: left;
+        font-family: Arial;
+        border-left: 1px solid #fada81;
+    }
+
+
+        .main-content .nav-content .nav-btn {
+            margin: 10px 25px;
+        }
+
+            .main-content .nav-content .nav-btn input {
+                padding: 7px 10px;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+        .main-content .nav-content ul {
+            list-style-type: none;
+        }
+
+            .main-content .nav-content ul li ol li {
+                margin: 10px 5px;
+                font-size: 15px;
+                color: blue;
+            }
+
+    .main-content .task-content {
+        width: 75%;
+        float: left;
+        background: yellow;
+    }
+
+        .main-content .task-content .task-list {
+            width: 75%;
+            float: left;
+            background: aquamarine;
+        }
+
+        .main-content .task-content .list-users {
+            width: 25%;
+            float: left;
+        }
+
+
+.create-group form {
+    width: 350px;
+    margin: inherit;
+    padding-top: 70px;
+}
+
+    .create-group form label {
+        display: block;
+    }
+
+    .create-group form input[type=text] {
+        width: 95%;
+        background: #f1f3f4;
+        padding: 8px;
+        font-size: 16px;
+        margin: 10px 0;
+    }
+
+    .create-group form input[type=radio] {
+        margin: 10px 0;
+    }
+
+    .create-group form input[type=submit] {
+        width: 100%;
+        padding: 10px;
+    }

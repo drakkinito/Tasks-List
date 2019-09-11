@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ToDoList.Data;
 
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ListContext))]
-    partial class ListContextModelSnapshot : ModelSnapshot
+    [Migration("20190906133625_new-model-v3")]
+    partial class newmodelv3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,13 +27,17 @@ namespace ToDoList.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("IsPrivate");
-
                     b.Property<string>("Name");
+
+                    b.Property<bool>("Private");
+
+                    b.Property<int>("UserId");
 
                     b.Property<string>("UserRole");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Groups");
                 });
@@ -82,15 +88,21 @@ namespace ToDoList.Migrations
 
                     b.Property<int>("GroupItemId");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("UserEmail");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GroupItemId");
 
-                    b.HasIndex("UserId");
+                    b.ToTable("UsersGroup");
+                });
 
-                    b.ToTable("UsersGroups");
+            modelBuilder.Entity("ToDoList.Models.GroupItem", b =>
+                {
+                    b.HasOne("ToDoList.Models.User", "User")
+                        .WithMany("GroupItems")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ToDoList.Models.TaskItem", b =>
@@ -106,11 +118,6 @@ namespace ToDoList.Migrations
                     b.HasOne("ToDoList.Models.GroupItem", "GroupItem")
                         .WithMany("UsersGroups")
                         .HasForeignKey("GroupItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ToDoList.Models.User", "User")
-                        .WithMany("UsersGroups")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
