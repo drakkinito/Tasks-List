@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ToDoList.Models
 {
@@ -12,16 +9,14 @@ namespace ToDoList.Models
         public bool? IsPrivate { get; set; }
         public string UserRole { get; set; }
 
-        public List<UsersGroup> UsersGroups { get; set; }
+        public IEnumerable<UsersGroup> Users { get; set; }
 
-        public List<TaskItem> TaskItems { get; set; }
+        public IEnumerable<TaskItem> TaskItems { get; set; }
 
         public GroupItem()
         {
-            UsersGroups = new List<UsersGroup>();
-            TaskItems = new List<TaskItem>();
+            //Users = new List<UsersGroup>();
+            //TaskItems = new List<TaskItem>();
         }
-
     }
 }
-

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ToDoList.Models
 {
@@ -10,10 +11,11 @@ namespace ToDoList.Models
 
         public List<UsersGroup> UsersGroups { get; set; }
         public static object Claims { get; internal set; }
-
+        public List<TaskItem> TaskItems { get; set; }
         public User()
         {
             UsersGroups = new List<UsersGroup>();
+            TaskItems = new List<TaskItem>();
         }
 
     }

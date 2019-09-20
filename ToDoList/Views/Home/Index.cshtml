@@ -1,17 +1,26 @@
-﻿@model ToDoList.Models.ModelGroupAndTask;
-@using Microsoft.AspNetCore.Html
+﻿@model ToDoList.Models.GroupsTasksViewModel
 
 @{
     ViewData["Title"] = "List";
+    var userOptionTasks = Model.Users
+        .Select(x => new SelectListItem { Value = x.User.Id.ToString(), Text = x.User.Email })
+        .ToList();
+}
+
+@functions {
+
+    string AssignClass(bool? assign)
+    {
+        return assign == true ? "s-assign" : assign == false ? "s-process" : "s-isNull";
+    }
+
 }
 
 <div class="main-content">
     <div class="nav-content">
-        @ViewData["UserEmail"]
+        @*@ViewData["UserEmail"]*@
         <div class="nav-btn">
-            <a asp-action="Index" asp-controller="Group" asp-route-id="">
-                <input type="submit" value="Add new group" />
-            </a>
+            <a asp-action="CreateGroup" asp-controller="Group" class="btn-a">New group</a>
         </div>
         <ul>
             <li>
@@ -19,35 +28,49 @@
                 {
                     if (groups.GroupItem.IsPrivate == null)
                     {
-                        <div>
+                        <section>
                             <a asp-action="Index" asp-route-id="@groups.GroupItem.Id" asp-controller="Home">@groups.GroupItem.Name</a>
-                        </div>
+                        </section>
                     }
                 }
             </li>
             <li>
-                <h5>Private group:</h5>
+                <h4>Private group:</h4>
                 @foreach (var groups in Model.UsersGroups)
                 {
                     if (groups.GroupItem.IsPrivate == true)
                     {
                         <div>
-                            <a asp-action="Index" asp-route-id="@groups.GroupItem.Id" asp-controller="Home">
+                            <a asp-action="Index"
+                               asp-route-id="@groups.GroupItem.Id"
+                               asp-controller="Home">
                                 @groups.GroupItem.Name
+                            </a>
+                            <a asp-action="EditGroup"
+                               asp-route-id="@groups.GroupItem.Id"
+                               asp-controller="Group">
+                                edit
                             </a>
                         </div>
                     }
                 }
             </li>
             <li>
-                <h5>Public group:</h5>
+                <h4>Public group:</h4>
                 @foreach (var groups in Model.UsersGroups)
                 {
                     if (groups.GroupItem.IsPrivate == false)
                     {
                         <div>
-                            <a asp-action="Index" asp-route-id="@groups.GroupItem.Id" asp-controller="Home">
+                            <a asp-action="Index"
+                               asp-route-id="@groups.GroupItem.Id"
+                               asp-controller="Home">
                                 @groups.GroupItem.Name
+                            </a>
+                            <a asp-action="EditGroup"
+                               asp-route-id="@groups.GroupItem.Id"
+                               asp-controller="Group">
+                                edit
                             </a>
                         </div>
                     }
@@ -57,31 +80,82 @@
     </div>
     <div class="task-content">
         <div class="task-list">
-            <h2>My Tasks</h2>
-            <a asp-action="Create" asp-controller="Home">
-                <input type="submit" value="Add new task" />
-            </a>
-
+            <div class="task-list_title">
+                <span>Group: <strong>@ViewBag.GroupName.Name</strong></span>
+                <a asp-action="Create" asp-controller="Home" class="btn-a">New task</a>
+            </div>
+            @* task block *@
             @foreach (var tasks in Model.Tasks)
             {
                 <div class="list-item">
-                    <h3>@tasks.Title</h3>
-                    <div>
+                    <i class="status @AssignClass(@tasks.Assign)"></i>
+                    <span>@tasks.Title</span>
+                    <div class="list-item__take">
+                        <form asp-action="AddAssign" asp-controller="Home" asp-route-id="@tasks.Id" id="assign" method="post">
+                            <select name="AssignUserId" asp-items="@userOptionTasks">
+                                <option selected disabled hidden>@(tasks.Users != null ? tasks.Users.Email : "Assign user")</option>
+                            </select>
+                            <input type="submit" class="btn-a" value="take" />
+                        </form>
+                    </div>
+                    <div class="list-item-content">
                         <i>@tasks.ReleaseDate</i>
                         <br />
                         <pre>@tasks.Text</pre>
+
                         <div class="list-item__link">
-                            <a asp-action="" asp-route-id="">Edit</a>
-                            <a asp-action="" asp-route-id="">Delete</a>
+                            <a asp-action="Delete" asp-route-id="@tasks.Id" class="btn-a">delete</a>
+                            <a asp-action="Edit" asp-route-id="@tasks.Id" class="btn-a">edit</a>
                         </div>
                     </div>
                 </div>
-                //}
             }
         </div>
-        <div class="list-users">WDASDDS</div>
+        <div class="list-users">
+            <ul>
+                @foreach (var u in Model.Users)
+                {
+                    <li>@u.User.Email</li>
+                }
+            </ul>
+            <form asp-action="AddUserForGroup" asp-controller="Home" method="post" id="addUser">
+                <label for="newUser">Add user:</label>
+                <input type="text" id="newUser" name="Name" placeholder="put down email user" value="@ViewBag.UserErrorName" />
+                <input type="text" name="GroupId" value="@ViewBag.GroupName.Id" class="hidden" />
+                <span>@ViewBag.UserErrorMessage</span>
+                <input type="submit" value="Add user" />
+            </form>
+        </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#addUser").validate({
+            rules: {
+                Name: {
+                    required: true,
+                    email: true
+                },
+            }
+        });
+
+        $("#assign").validate({
+            rules: {
+                AssignUserId: {
+                    required: true,
+                }
+              
+            },
+            messages: {
+                AssignUserId: "Nothing select"
+            }
+        });
+    </script>
+}
+
 
 @*<div class="new-task">
         <form asp-antiforgery="true" asp-action="Create" asp-controller="Home" id="newTaskForm">
@@ -112,21 +186,21 @@
 
     </div>*@
 
-@section Scripts {
-    <script type="text/javascript">
-        $("#newTaskForm").validate({
-            rules: {
-                Title: {
-                    required: true
+@*@section Scripts {
+        <script type="text/javascript">
+            $("#newTaskForm").validate({
+                rules: {
+                    Title: {
+                        required: true
+                    },
+                    Text: {
+                        required: true
+                    }
                 },
-                Text: {
-                    required: true
+                messages: {
+                    Title: "Required Field",
+                    Text: "Required Field"
                 }
-            },
-            messages: {
-                Title: "Required Field",
-                Text: "Required Field"
-            }
-        });
-    </script>
-}
+            });
+        </script>
+    }*@

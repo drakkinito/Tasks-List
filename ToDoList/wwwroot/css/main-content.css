@@ -3,58 +3,191 @@
     color: blue;
 }
 
-.main-content {
-    width: 900px;
-    margin: 10px auto;
-    background: #e0e0e0;
+ul li {
+    list-style-type: none;
+    font-size: 13px;
 }
 
+.btn-a {
+    padding: 6px;
+    background: #60c1fd;
+    color: #2b2b2b;
+    border-radius: 3px;
+}
+
+.main-content {
+    width: 900px;
+    margin: 20px auto;
+    font-family: Arial;
+}
+    /*.nav-content*/
     .main-content .nav-content {
         width: 24%;
         float: left;
-        font-family: Arial;
-        border-left: 1px solid #fada81;
+        background: aliceblue;
+        border-top: 1px solid #fada81;
     }
 
-
         .main-content .nav-content .nav-btn {
-            margin: 10px 25px;
+            margin: 15px 10px;
         }
-
-            .main-content .nav-content .nav-btn input {
-                padding: 7px 10px;
-                font-size: 14px;
-                cursor: pointer;
-            }
 
         .main-content .nav-content ul {
-            list-style-type: none;
+            margin: 25px;
+            padding: 0;
         }
 
-            .main-content .nav-content ul li ol li {
-                margin: 10px 5px;
-                font-size: 15px;
-                color: blue;
+            .main-content .nav-content ul li div {
+                padding: 4px 0px 4px 15px;
             }
 
+            .main-content .nav-content ul li a {
+                color: #0070ff;
+            }
+
+            .main-content .nav-content ul li h4 {
+                margin: 10px 0 2px 0;
+            }
+
+            .main-content .nav-content ul li a:nth-child(2) {
+                float: right;
+                text-decoration: none;
+                color: #3e3d3d;
+                background: #f7e9c3;
+                padding: 2px 6px;
+                border-radius: 3px;
+            }
+    /*.task-content*/
     .main-content .task-content {
-        width: 75%;
+        width: 76%;
         float: left;
-        background: yellow;
     }
 
         .main-content .task-content .task-list {
             width: 75%;
             float: left;
-            background: aquamarine;
         }
+
+            .main-content .task-content .task-list .task-list_title {
+                position: relative;
+                margin: 15px 30px 30px 30px;
+            }
+
+                .main-content .task-content .task-list .task-list_title span {
+                    font-size: 15px;
+                    font-style: italic;
+                }
+
+                    .main-content .task-content .task-list .task-list_title span strong {
+                        font-size: 16px;
+                        font-style: initial;
+                    }
+
+                .main-content .task-content .task-list .task-list_title a {
+                    position: absolute;
+                    right: 0;
+                }
+
+            .main-content .task-content .task-list .list-item {
+                position: relative;
+                width: 88%;
+                margin: 15px 30px;
+                background: aliceblue;
+                border-bottom: 1px solid #f7e9c3;
+            }
+
+                .main-content .task-content .task-list .list-item .status {
+                    width: 10px;
+                    height: 10px;
+                    position: absolute;
+                    top: 0;
+                    left: 15px;
+                }
+
+                    .main-content .task-content .task-list .list-item .status.s-isNull {
+                        background: red;
+                    }
+
+                    .main-content .task-content .task-list .list-item .status.s-process {
+                        background: yellow;
+                    }
+
+                    .main-content .task-content .task-list .list-item .status.s-assign {
+                        background: green;
+                    }
+
+                .main-content .task-content .task-list .list-item span {
+                    font-weight: bolder;
+                    margin: 15px 15px 0;
+                    display: inline-table;
+                }
+
+                .main-content .task-content .task-list .list-item .list-item__take {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                }
+
+                    .main-content .task-content .task-list .list-item .list-item__take select {
+                        padding: 2px;
+                        border-color: #f7e9c3;
+                        color: gray;
+                        border-radius: 3px;
+                    }
+
+                        .main-content .task-content .task-list .list-item .list-item__take select option {
+                            color: #383838;
+                        }
+
+                    .main-content .task-content .task-list .list-item .list-item__take label.error {
+                        font-size: 10px;
+                        position: absolute;
+                        width: 100px;
+                        top: 25px;
+                        left: 0px;
+                        color: red;
+                    }
+
+                    .main-content .task-content .task-list .list-item .list-item__take input {
+                        background-color: #f7e9c3;
+                        padding: 3px 6px;
+                        font-size: 13px;
+                        cursor: pointer;
+                    }
+
+                .main-content .task-content .task-list .list-item .list-item-content {
+                    margin: 0px 15px;
+                }
+
+                    .main-content .task-content .task-list .list-item .list-item-content i {
+                        font-size: 10px;
+                    }
+
+                    .main-content .task-content .task-list .list-item .list-item-content pre {
+                        font-size: 16px;
+                        margin: 8px 0;
+                    }
+
+                    .main-content .task-content .task-list .list-item .list-item-content .list-item__link {
+                        height: 17px;
+                    }
+
+                        .main-content .task-content .task-list .list-item .list-item-content .list-item__link a {
+                            float: right;
+                            font-size: 12px;
+                            text-decoration: none;
+                            color: #3e3d3d;
+                            background: #f7e9c3;
+                            padding: 2px 6px;
+                            border-radius: 3px;
+                            margin-left: 4px;
+                        }
 
         .main-content .task-content .list-users {
             width: 25%;
             float: left;
         }
-
-
+/*create-group*/
 .create-group form {
     width: 350px;
     margin: inherit;

@@ -10,8 +10,8 @@ using ToDoList.Data;
 namespace ToDoList.Migrations
 {
     [DbContext(typeof(ListContext))]
-    [Migration("20190909141534_new-model-v8")]
-    partial class newmodelv8
+    [Migration("20190919162437_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,8 @@ namespace ToDoList.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool?>("Assign");
+
                     b.Property<int>("GroupItemId");
 
                     b.Property<DateTime>("ReleaseDate");
@@ -71,26 +73,24 @@ namespace ToDoList.Migrations
 
                     b.Property<string>("Password");
 
+                    b.Property<int?>("TaskItemId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TaskItemId");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ToDoList.Models.UsersGroup", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("UserId");
 
                     b.Property<int>("GroupItemId");
 
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserId", "GroupItemId");
 
                     b.HasIndex("GroupItemId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UsersGroups");
                 });
@@ -103,10 +103,17 @@ namespace ToDoList.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("ToDoList.Models.User", b =>
+                {
+                    b.HasOne("ToDoList.Models.TaskItem")
+                        .WithMany("UsersId")
+                        .HasForeignKey("TaskItemId");
+                });
+
             modelBuilder.Entity("ToDoList.Models.UsersGroup", b =>
                 {
                     b.HasOne("ToDoList.Models.GroupItem", "GroupItem")
-                        .WithMany("UsersGroups")
+                        .WithMany("Users")
                         .HasForeignKey("GroupItemId")
                         .OnDelete(DeleteBehavior.Cascade);
 

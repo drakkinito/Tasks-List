@@ -4,7 +4,7 @@
 }
 
 <div class="new-task">
-    <form asp-antiforgery="true" asp-action="CreateNew" asp-controller="Home" id="newTaskForm">
+    <form asp-antiforgery="true" asp-action="CreateNewTask" asp-controller="Home" id="newTaskForm">
         <input type="text" placeholder="Write your task title..." name="Title" />
         <textarea placeholder="Write your text..." name="Text"></textarea>
         <input type="text" name="ReleaseDate" value="@DateTime.Now" style="display:none" />

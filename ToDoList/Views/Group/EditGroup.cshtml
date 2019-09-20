@@ -1,0 +1,65 @@
+﻿@model ToDoList.ViewModels.CreateGroupViewModel
+@using ToDoList.ViewModels 
+
+
+@{
+    ViewBag.Title = "Edit group";
+
+    IEnumerable<PublicUserViewModel> users = ViewBag.Users;
+    IEnumerable<PublicUserViewModel> usersChecked = ViewBag.UsersChecked;
+}
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="~/js/chose/chosen.jquery.min.js"></script>
+
+<div class="create-group">
+    @using (Html.BeginForm("EditGroup", "Group", FormMethod.Post, new { id = Model.Id }))
+    {
+        <h2>Edit</h2>
+        <p>
+            @Html.LabelFor(l => l.Name, "Name:")
+            @Html.EditorFor(model => model.Name, new { text = "Last Name" })
+        </p>
+
+        <p>
+            @Html.LabelFor(l => l.IsPrivate, "Public:")
+            @Html.RadioButton("isPrivate", false, Model.IsPrivate is false)
+        </p>
+        <p>
+            @Html.LabelFor(l => l.IsPrivate, "Private:")
+            @Html.RadioButton("isPrivate", true, Model.IsPrivate is true)
+        </p>
+        <span>Members:</span>
+        <p>
+            @Html.DropDownListFor(m => m.Users,
+                users.Select(x => new SelectListItem
+                {
+                Text = x.Email,
+                Value = x.Id.ToString()
+                }), new { @class = "form-control chosen-select", @multiple = "true" })
+        </p>
+        <p>
+            <input type="text" style="display: none" name="UserRole" value="Admin" />
+        </p>
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+        <p>
+            <a asp-action="DeleteGroup" asp-controller="Group" asp-route-id="@Model.Id">Delete group</a>
+        </p>
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $('.chosen-select')
+            .chosen(
+                {
+                    placeholder_text_multiple: "Choose members",
+                    no_results_text: "Oops, nothing found!",
+                    width: "100%"
+                });
+
+        $(".chosen-select").val(@Json.Serialize(usersChecked.Select(x => x.Id))).trigger("chosen:updated");
+    </script>
+}

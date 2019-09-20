@@ -20,13 +20,16 @@ form input[type="submit"]:hover {
     background: #f1f3f4;
 }
 
+.hidden {
+   display: none;    
+}
 
 
 header {
-    /*height: 10vh;*/
-    height: 25vh;
-    margin: 0 auto;
+    height: 70px;
     width: 900px;
+    margin: 0 auto;
+    background: aliceblue;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border-bottom: 1px solid #fada81;
 }

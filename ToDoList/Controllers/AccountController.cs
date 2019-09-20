@@ -53,18 +53,20 @@ namespace ToDoList.Controllers
                     UsersGroup usersGroup = _db.UsersGroups
                             .FirstOrDefault(x => x.GroupItemId == user.Id);
 
-                    return RedirectToAction("Index", "Home", new { id = usersGroup.GroupItemId });
+                    var groupId = _db.UsersGroups.Include(x => x.GroupItemId).Where(x => x.UserId == user.Id).Select(x => x.GroupItemId);
+
+                    return RedirectToAction("Index", "Home", new { id = groupId.ToList()[0] });
 
                     //HttpContext.Response.Cookies.Append("user_id", $"{user.Id}");
                     //await Authenticate(model.Email);
 
                 }
-                return View(model);
+                else
+                {
+                    ModelState.AddModelError("Email", "There is no such Email");
+                }
             }
-            else
-            {
-                return View(model);
-            }
+            return View(model);
         }
 
         [HttpGet]
@@ -94,8 +96,6 @@ namespace ToDoList.Controllers
 
                     await _db.SaveChangesAsync();
 
-                    await Authenticate(user); // аутентификация
-
                     InitializeData.Initialize(_db, user);
 
                     //HttpContext.Response.Cookies.Append("user_id", $"{user.Id}");
@@ -104,7 +104,7 @@ namespace ToDoList.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+                    ModelState.AddModelError("Email", "Email already exists");
                 }
             }
             return View(model);
