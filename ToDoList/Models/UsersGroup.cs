@@ -12,5 +12,7 @@ namespace ToDoList.Models
 
         public int GroupItemId { get; set; }
         public GroupItem GroupItem { get; set; }
+
+        //public bool UserRole { get; set; }
     }
 }

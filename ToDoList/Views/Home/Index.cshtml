@@ -9,9 +9,9 @@
 
 @functions {
 
-    string AssignClass(bool? assign)
+    string AssignCheck(bool? assign, string isAssign, string process, string isNull)
     {
-        return assign == true ? "s-assign" : assign == false ? "s-process" : "s-isNull";
+        return assign == true ? isAssign : assign == false ? process : isNull;
     }
 
 }
@@ -24,32 +24,32 @@
         </div>
         <ul>
             <li>
-                @foreach (var groups in Model.UsersGroups)
+                @foreach (var groups in Model.GroupItems)
                 {
-                    if (groups.GroupItem.IsPrivate == null)
+                    if (groups.IsPrivate == null)
                     {
                         <section>
-                            <a asp-action="Index" asp-route-id="@groups.GroupItem.Id" asp-controller="Home">@groups.GroupItem.Name</a>
+                            <a asp-action="Index" asp-route-id="@groups.Id" asp-controller="Home">@groups.Name</a>
                         </section>
                     }
                 }
             </li>
             <li>
                 <h4>Private group:</h4>
-                @foreach (var groups in Model.UsersGroups)
+                @foreach (var groups in Model.GroupItems)
                 {
-                    if (groups.GroupItem.IsPrivate == true)
+                    if (groups.IsPrivate == true)
                     {
                         <div>
                             <a asp-action="Index"
-                               asp-route-id="@groups.GroupItem.Id"
+                               asp-route-id="@groups.Id"
                                asp-controller="Home">
-                                @groups.GroupItem.Name
+                                @groups.Name
                             </a>
                             <a asp-action="EditGroup"
-                               asp-route-id="@groups.GroupItem.Id"
+                               asp-route-id="@groups.Id"
                                asp-controller="Group">
-                                edit
+                                @(groups.UserRole == "Admin" ? "edit" : "")
                             </a>
                         </div>
                     }
@@ -57,18 +57,18 @@
             </li>
             <li>
                 <h4>Public group:</h4>
-                @foreach (var groups in Model.UsersGroups)
+                @foreach (var groups in Model.GroupItems)
                 {
-                    if (groups.GroupItem.IsPrivate == false)
+                    if (groups.IsPrivate == false)
                     {
                         <div>
                             <a asp-action="Index"
-                               asp-route-id="@groups.GroupItem.Id"
+                               asp-route-id="@groups.Id"
                                asp-controller="Home">
-                                @groups.GroupItem.Name
+                                @groups.Name
                             </a>
                             <a asp-action="EditGroup"
-                               asp-route-id="@groups.GroupItem.Id"
+                               asp-route-id="@groups.Id"
                                asp-controller="Group">
                                 edit
                             </a>
@@ -88,12 +88,20 @@
             @foreach (var tasks in Model.Tasks)
             {
                 <div class="list-item">
-                    <i class="status @AssignClass(@tasks.Assign)"></i>
+                    <label class="task-status">
+                        <input type="checkbox" checked="@tasks.isAssign">
+                        <a class="@AssignCheck(@tasks.isAssign, "checkmark s-assign", "checkmark s-process", "checkmark s-isNull")" asp-action="FinishTask" asp-controller="Home" asp-route-taskId="@tasks.Id"></a>
+                        <i>@AssignCheck(@tasks.isAssign, "is done", "in process", "not assign")</i>
+                    </label>
+
                     <span>@tasks.Title</span>
                     <div class="list-item__take">
-                        <form asp-action="AddAssign" asp-controller="Home" asp-route-id="@tasks.Id" id="assign" method="post">
+                        <form asp-action="AddAssign" asp-controller="Home" asp-route-tasksId="@tasks.Id" id="assign" method="post">
                             <select name="AssignUserId" asp-items="@userOptionTasks">
-                                <option selected disabled hidden>@(tasks.Users != null ? tasks.Users.Email : "Assign user")</option>
+                                <option selected="@(tasks.isAssign == null ? "" : tasks.isAssign == false ? "selected" : "")"
+                                        disabled="@(tasks.isAssign == false || tasks.isAssign == true ? "disabled" : "")">
+                                    @(tasks.isAssign == false ? tasks.Users.Email : tasks.isAssign == true ? tasks.Users.Email : "Assign user")
+                                </option>
                             </select>
                             <input type="submit" class="btn-a" value="take" />
                         </form>
@@ -112,18 +120,19 @@
             }
         </div>
         <div class="list-users">
-            <ul>
+            <span>Members group:</span>
+            <ol>
                 @foreach (var u in Model.Users)
                 {
                     <li>@u.User.Email</li>
                 }
-            </ul>
+            </ol>
             <form asp-action="AddUserForGroup" asp-controller="Home" method="post" id="addUser">
                 <label for="newUser">Add user:</label>
                 <input type="text" id="newUser" name="Name" placeholder="put down email user" value="@ViewBag.UserErrorName" />
                 <input type="text" name="GroupId" value="@ViewBag.GroupName.Id" class="hidden" />
                 <span>@ViewBag.UserErrorMessage</span>
-                <input type="submit" value="Add user" />
+                <input type="submit" value="Add" />
             </form>
         </div>
     </div>
@@ -133,21 +142,12 @@
 
 @section Scripts {
     <script type="text/javascript">
-        $("#addUser").validate({
-            rules: {
-                Name: {
-                    required: true,
-                    email: true
-                },
-            }
-        });
-
         $("#assign").validate({
             rules: {
                 AssignUserId: {
                     required: true,
                 }
-              
+
             },
             messages: {
                 AssignUserId: "Nothing select"
@@ -186,21 +186,3 @@
 
     </div>*@
 
-@*@section Scripts {
-        <script type="text/javascript">
-            $("#newTaskForm").validate({
-                rules: {
-                    Title: {
-                        required: true
-                    },
-                    Text: {
-                        required: true
-                    }
-                },
-                messages: {
-                    Title: "Required Field",
-                    Text: "Required Field"
-                }
-            });
-        </script>
-    }*@

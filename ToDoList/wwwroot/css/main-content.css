@@ -70,7 +70,7 @@ ul li {
 
             .main-content .task-content .task-list .task-list_title {
                 position: relative;
-                margin: 15px 30px 30px 30px;
+                margin: 15px 30px 30px 26px;
             }
 
                 .main-content .task-content .task-list .task-list_title span {
@@ -90,103 +90,286 @@ ul li {
 
             .main-content .task-content .task-list .list-item {
                 position: relative;
-                width: 88%;
-                margin: 15px 30px;
+                width: 84%;
+                margin: 15px 53px;
                 background: aliceblue;
                 border-bottom: 1px solid #f7e9c3;
             }
 
-                .main-content .task-content .task-list .list-item .status {
-                    width: 10px;
-                    height: 10px;
-                    position: absolute;
-                    top: 0;
+                .main-content .task-content .task-list .list-item .task-status {
+                    /*position: absolute;
+                    top: 7px;
                     left: 15px;
+                    background: red;
+                    height: 13px;
+                    width: 13px;
+                    text-align: center;
+                    border-radius: 2px;*/
+                    display: block;
+                    position: relative;
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
                 }
 
-                    .main-content .task-content .task-list .list-item .status.s-isNull {
+                    .main-content .task-content .task-list .list-item .task-status input {
+                        position: absolute;
+                        opacity: 0;
+                        cursor: pointer;
+                        height: 0;
+                        width: 0;
+                    }
+
+                .main-content .task-content .task-list .list-item .task-status {
+                    position: absolute;
+                    top: -5px;
+                    left: -41px;
+                    height: 20px;
+                    width: 20px;
+
+                    cursor: initial;
+                }
+
+                    .main-content .task-content .task-list .list-item .task-status .checkmark {
+                        position: absolute;
+                        top: 5px;
+                        left: 15px;
+                        height: 20px;
+                        width: 20px;
+                        border-radius: 2px;
+                    }
+
+                    .main-content .task-content .task-list .list-item .task-status .s-assign {
+                        height: 17px;
+                        width: 17px;
+                        border: 2px solid forestgreen;
+                    }
+
+                    .main-content .task-content .task-list .list-item .task-status .checkmark.s-process {
+                        height: 17px;
+                        width: 17px;
+                        border: 2px solid #ffae37;
+                    }
+
+                    .main-content .task-content .task-list .list-item .task-status .checkmark.s-isNull {
+                        background-color: red;
+                        cursor: initial;
+                    }
+                    /*.main-content .task-content .task-list .list-item .task-status:hover input ~ .checkmark {
+                        background-color: #ccc;
+                    }*/
+                    .main-content .task-content .task-list .list-item .task-status input:checked ~ .s-assign {
+                        height: 17px;
+                        width: 17px;
+                        border: 2px solid forestgreen;
+                    }
+
+                    .main-content .task-content .task-list .list-item .task-status .s-assign::after {
+                        content: "";
+                        position: absolute;
+                        display: none;
+                    }
+
+                    .main-content .task-content .task-list .list-item .task-status input:checked ~ .s-assign:after {
+                        display: block;
+                    }
+
+                    .main-content .task-content .task-list .list-item .task-status .s-assign:after {
+                        left: 5px;
+                        top: 1px;
+                        width: 4px;
+                        height: 9px;
+                        border: solid forestgreen;
+                        border-width: 0 3px 3px 0;
+                        -webkit-transform: rotate(45deg);
+                        -ms-transform: rotate(45deg);
+                        transform: rotate(45deg);
+                    }
+                    /**/
+                    .main-content .task-content .task-list .list-item .task-status i {
+                        width: 80px;
+                        position: absolute;
+                        top: 8px;
+                        left: 56px;
+                        font-size: 12px;
+                    }
+
+                    .main-content .task-content .task-list .list-item .task-status.s-isNull {
                         background: red;
                     }
 
-                    .main-content .task-content .task-list .list-item .status.s-process {
-                        background: yellow;
+                    .main-content .task-content .task-list .list-item .task-status.s-process {
+                        background: #FFC107;
                     }
 
-                    .main-content .task-content .task-list .list-item .status.s-assign {
+                    .main-content .task-content .task-list .list-item .task-status.s-assign {
                         background: green;
                     }
 
                 .main-content .task-content .task-list .list-item span {
                     font-weight: bolder;
-                    margin: 15px 15px 0;
+                    margin: 28px 15px 0;
                     display: inline-table;
                 }
+/**/
 
-                .main-content .task-content .task-list .list-item .list-item__take {
-                    position: absolute;
-                    top: 15px;
-                    right: 15px;
-                }
 
-                    .main-content .task-content .task-list .list-item .list-item__take select {
-                        padding: 2px;
-                        border-color: #f7e9c3;
-                        color: gray;
-                        border-radius: 3px;
-                    }
+.checkmark {
+}
 
-                        .main-content .task-content .task-list .list-item .list-item__take select option {
-                            color: #383838;
-                        }
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+    /*background-color: #ccc;*/
+}
 
-                    .main-content .task-content .task-list .list-item .list-item__take label.error {
-                        font-size: 10px;
-                        position: absolute;
-                        width: 100px;
-                        top: 25px;
-                        left: 0px;
-                        color: red;
-                    }
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+    /*background-color: #2196F3;*/
+}
 
-                    .main-content .task-content .task-list .list-item .list-item__take input {
-                        background-color: #f7e9c3;
-                        padding: 3px 6px;
-                        font-size: 13px;
-                        cursor: pointer;
-                    }
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    /*content: "";
+    position: absolute;
+    display: none;*/
+}
 
-                .main-content .task-content .task-list .list-item .list-item-content {
-                    margin: 0px 15px;
-                }
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+    /*display: block;*/
+}
 
-                    .main-content .task-content .task-list .list-item .list-item-content i {
-                        font-size: 10px;
-                    }
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+    /*left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);*/
+}
 
-                    .main-content .task-content .task-list .list-item .list-item-content pre {
-                        font-size: 16px;
-                        margin: 8px 0;
-                    }
 
-                    .main-content .task-content .task-list .list-item .list-item-content .list-item__link {
-                        height: 17px;
-                    }
+/**/
+.main-content .task-content .task-list .list-item .list-item__take {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
 
-                        .main-content .task-content .task-list .list-item .list-item-content .list-item__link a {
-                            float: right;
-                            font-size: 12px;
-                            text-decoration: none;
-                            color: #3e3d3d;
-                            background: #f7e9c3;
-                            padding: 2px 6px;
-                            border-radius: 3px;
-                            margin-left: 4px;
-                        }
+    .main-content .task-content .task-list .list-item .list-item__take select {
+        padding: 2px;
+        border-color: #f7e9c3;
+        color: gray;
+        border-radius: 3px;
+    }
 
-        .main-content .task-content .list-users {
-            width: 25%;
-            float: left;
+        .main-content .task-content .task-list .list-item .list-item__take select option {
+            color: #383838;
         }
+
+    .main-content .task-content .task-list .list-item .list-item__take label.error {
+        font-size: 10px;
+        position: absolute;
+        width: 100px;
+        top: 25px;
+        left: 0px;
+        color: red;
+    }
+
+    .main-content .task-content .task-list .list-item .list-item__take input {
+        background-color: #f7e9c3;
+        padding: 3px 6px;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+.main-content .task-content .task-list .list-item .list-item-content {
+    margin: 0px 15px;
+}
+
+    .main-content .task-content .task-list .list-item .list-item-content i {
+        font-size: 10px;
+    }
+
+    .main-content .task-content .task-list .list-item .list-item-content pre {
+        font-size: 16px;
+        margin: 8px 0;
+    }
+
+    .main-content .task-content .task-list .list-item .list-item-content .list-item__link {
+        height: 17px;
+    }
+
+        .main-content .task-content .task-list .list-item .list-item-content .list-item__link a {
+            float: right;
+            font-size: 12px;
+            text-decoration: none;
+            color: #3e3d3d;
+            background: #f7e9c3;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 4px;
+        }
+
+.main-content .task-content .list-users {
+    width: 25%;
+    float: left;
+    margin: 15px 0;
+}
+
+    .main-content .task-content .list-users span {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .main-content .task-content .list-users ol {
+        margin: 10px 0;
+        padding: 0 35px;
+        font-size: 14px;
+        overflow-y: auto;
+        max-height: 300px;
+    }
+
+    .main-content .task-content .list-users form {
+        margin: 20px 0;
+    }
+
+        .main-content .task-content .list-users form label {
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .main-content .task-content .list-users form input[type=text] {
+            border: 1px solid #f7e9c3;
+            border-radius: 3px;
+            padding: 3px 10px;
+            margin: 9px 0px;
+            font-size: 14px;
+            width: 150px;
+        }
+
+        .main-content .task-content .list-users form span {
+            font-size: 11px;
+            position: relative;
+            bottom: 8px;
+            left: 2px;
+            color: red;
+            font-weight: 100;
+        }
+
+        .main-content .task-content .list-users form input[type=submit] {
+            padding: 5px 8px;
+            background: #f7e9c3;
+            float: right;
+            margin: 5px 0px;
+        }
+
 /*create-group*/
 .create-group form {
     width: 350px;

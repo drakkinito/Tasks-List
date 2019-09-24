@@ -29,14 +29,14 @@ namespace ToDoList
                 context.Groups.Add(groupDefault);
                 context.SaveChanges();
 
-                TaskItem t1 = new TaskItem
-                { Title = "Date", Text = "Buy the floawers", ReleaseDate = DateTime.UtcNow, GroupItemId = groupDefault.Id };
-                TaskItem t2 = new TaskItem
-                { Title = "buy phone", Text = "Galaxy j1", ReleaseDate = DateTime.UtcNow, GroupItemId = groupDefault.Id };
-                TaskItem t3 = new TaskItem
-                { Title = "buy car", Text = "bmw 525i", ReleaseDate = DateTime.UtcNow, GroupItemId = groupDefault.Id };
+                //TaskItem t1 = new TaskItem
+                //{ Title = "Date", Text = "Buy the floawers", ReleaseDate = DateTime.UtcNow, GroupItemId = groupDefault.Id };
+                //TaskItem t2 = new TaskItem
+                //{ Title = "buy phone", Text = "Galaxy j1", ReleaseDate = DateTime.UtcNow, GroupItemId = groupDefault.Id };
+                //TaskItem t3 = new TaskItem
+                //{ Title = "buy car", Text = "bmw 525i", ReleaseDate = DateTime.UtcNow, GroupItemId = groupDefault.Id };
 
-                context.Tasks.AddRange(new List<TaskItem> { t1, t2, t3 });
+                //context.Tasks.AddRange(new List<TaskItem> { t1, t2, t3 });
 
                 context.SaveChanges();
 

@@ -40,21 +40,32 @@ namespace ToDoList.Controllers
         {
             if (model != null)
             {
-                var items = model.Users.Concat(new[] { UserId });
+                GroupItem groupItem = new GroupItem();
 
-                model.Users = items;
+                groupItem.Name = model.Name;
+                groupItem.IsPrivate = model.IsPrivate;
+                groupItem.UserRole = model.UserRole;
 
-                GroupItem groupItem = new GroupItem()
+                if (model.Users != null)
                 {
-                    Name = model.Name,
-                    IsPrivate = model.IsPrivate,
-                    UserRole = model.UserRole,
+                    var items = model.Users.Concat(new[] { UserId });
 
-                    Users = model.Users.Select(x => new UsersGroup
+                    model.Users = items;
+
+                    groupItem.Users = model.Users.Select(x => new UsersGroup
                     {
                         UserId = x
-                    }).ToList()
-                };
+                    }).ToList();
+                }
+                else
+                {
+                    model.Users = new int[] { UserId };
+
+                    groupItem.Users = model.Users.Select(x => new UsersGroup
+                    {
+                        UserId = x
+                    }).ToList();
+                }
 
                 await _context.Groups.AddAsync(groupItem);
 
@@ -99,6 +110,7 @@ namespace ToDoList.Controllers
         [HttpPost]
         public async Task<IActionResult> EditGroup(CreateGroupViewModel model)
         {
+
             int taskId = 0;
             if (model != null)
             {
@@ -112,37 +124,41 @@ namespace ToDoList.Controllers
                     .Select(x => x.UserId).ToList();
 
                 List<UsersGroup> newUsers = new List<UsersGroup>();
-
-                foreach (int item in model.Users)
+                if (model.Users != null)
                 {
-                    newUsers.Add(new UsersGroup { UserId = item, GroupItemId = model.Id });
+                    foreach (int item in model.Users)
+                    {
+                        newUsers.Add(new UsersGroup { UserId = item, GroupItemId = model.Id });
+                    }
                 }
 
                 newUsers.Add(new UsersGroup { UserId = UserId, GroupItemId = model.Id });
-                groupItem.Users = newUsers;
 
+                groupItem.Users = newUsers;
                 groupItem.Name = model.Name;
                 groupItem.IsPrivate = model.IsPrivate;
+
                 groupItem.UserRole = model.UserRole;
 
                 // delete assign user from task
-                var modelUsers = model.Users.ToArray();
+                //var modelUsers = model.Users.ToArray();
 
-                for (int i = 1; i < taskItem.Count(); i++)
-                {
-                    for (int j = 0; j < modelUsers.Count(); j++)
-                    {
-                        if (taskItem[i] != modelUsers[j])
-                        {
-                            var assignUser = _context.Tasks.FirstOrDefault(x => x.UserId == taskItem[i]);
-                            assignUser.UserId = null;
+                //for (int i = 1; i < taskItem.Count(); i++)
+                //{
+                //    for (int j = 0; j < modelUsers.Count(); j++)
+                //    {
+                //        if (taskItem[i] != modelUsers[j])
+                //        {
+                //            var assignUser = _context.Tasks.FirstOrDefault(x => x.UserId == taskItem[i]);
+                //            assignUser.UserId = null;
 
-                            taskId = taskItem[i];
-                            //_context.SaveChanges();
-                        }
+                //            taskId = taskItem[i];
+                //            //_context.SaveChanges();
+                //        }
 
-                    }
-                }
+                //    }
+                //}
+
 
                 _context.SaveChanges();
             }

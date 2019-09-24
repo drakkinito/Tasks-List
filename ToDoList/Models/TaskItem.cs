@@ -16,7 +16,7 @@ namespace ToDoList.Models
         [DataType(DataType.Date)]
         public DateTime ReleaseDate { get; set; }
 
-        public bool? Assign { get; set; }
+        public bool? isAssign { get; set; }
 
         public int GroupItemId { get; set; }
         public GroupItem GroupItem { get; set; }

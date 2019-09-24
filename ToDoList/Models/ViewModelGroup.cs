@@ -9,7 +9,7 @@ namespace ToDoList.Models
     public class GroupsTasksViewModel
     {
         public IEnumerable<TaskItem> Tasks { get; set; }
-        public IEnumerable<UsersGroup> UsersGroups { get; set; }
+        public IEnumerable<GroupItem> GroupItems { get; set; }
         public IEnumerable<UsersGroup> Users { get; set; }
     }
 

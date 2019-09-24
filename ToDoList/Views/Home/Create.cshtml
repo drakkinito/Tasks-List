@@ -13,3 +13,23 @@
     </form>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+@section Scripts {
+    <script type="text/javascript">
+        $("#newTaskForm").validate({
+            rules: {
+                Title: {
+                    required: true
+                },
+                Text: {
+                    required: true
+                }
+            },
+            messages: {
+                Title: "Required Field",
+                Text: "Required Field"
+            }
+        });
+    </script>
+}

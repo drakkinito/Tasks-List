@@ -42,8 +42,6 @@ namespace ToDoList.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool?>("Assign");
-
                     b.Property<int>("GroupItemId");
 
                     b.Property<DateTime>("ReleaseDate");
@@ -55,6 +53,8 @@ namespace ToDoList.Migrations
                         .IsRequired();
 
                     b.Property<int?>("UserId");
+
+                    b.Property<bool?>("isAssign");
 
                     b.HasKey("Id");
 

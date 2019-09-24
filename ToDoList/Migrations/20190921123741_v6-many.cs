@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ToDoList.Migrations
 {
-    public partial class v1 : Migration
+    public partial class v6many : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,6 +24,20 @@ namespace ToDoList.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Email = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Tasks",
                 columns: table => new
                 {
@@ -32,8 +46,9 @@ namespace ToDoList.Migrations
                     Title = table.Column<string>(nullable: false),
                     Text = table.Column<string>(nullable: false),
                     ReleaseDate = table.Column<DateTime>(nullable: false),
-                    Assign = table.Column<bool>(nullable: true),
-                    GroupItemId = table.Column<int>(nullable: false)
+                    isAssign = table.Column<bool>(nullable: true),
+                    GroupItemId = table.Column<int>(nullable: false),
+                    UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,25 +59,10 @@ namespace ToDoList.Migrations
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Email = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    TaskItemId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Tasks_TaskItemId",
-                        column: x => x.TaskItemId,
-                        principalTable: "Tasks",
+                        name: "FK_Tasks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -97,9 +97,9 @@ namespace ToDoList.Migrations
                 column: "GroupItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_TaskItemId",
-                table: "Users",
-                column: "TaskItemId");
+                name: "IX_Tasks_UserId",
+                table: "Tasks",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UsersGroups_GroupItemId",
@@ -110,16 +110,16 @@ namespace ToDoList.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "UsersGroups");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Tasks");
 
             migrationBuilder.DropTable(
+                name: "UsersGroups");
+
+            migrationBuilder.DropTable(
                 name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
