@@ -90,6 +90,7 @@ namespace ToDoList.Controllers
                     ViewBag.UserErrorName = message[1];
                 }
             }
+            
 
             ViewBag.UserEmail = userEmail.Email;
             ViewBag.GroupName = groupName;

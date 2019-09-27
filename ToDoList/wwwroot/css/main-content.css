@@ -1,6 +1,6 @@
 ﻿a {
     text-decoration: none;
-    color: blue;
+    color: #0070ff;
 }
 
 ul li {
@@ -35,6 +35,8 @@ ul li {
 
         .main-content .nav-content .nav-btn {
             margin: 15px;
+            font-size: 13px;
+            text-align: right;
         }
 
         .main-content .nav-content ul {
@@ -46,8 +48,16 @@ ul li {
                 padding: 4px 0px 4px 15px;
             }
 
-            .main-content .nav-content ul li a {
-                color: #0070ff;
+            .main-content .nav-content ul li:nth-child(1) div {
+                padding: 4px 0px 4px 0;
+            }
+
+            .main-content .nav-content ul li a:first-child {
+                overflow: hidden;
+                width: 100px;
+                display: -webkit-inline-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
             }
 
             .main-content .nav-content ul li h4 {
@@ -79,6 +89,8 @@ ul li {
             }
 
                 .main-content .task-content .task-list .task-list_title span {
+                    width: 80%;
+                    display: inline-block;
                     font-size: 15px;
                     font-style: italic;
                 }
@@ -91,6 +103,7 @@ ul li {
                 .main-content .task-content .task-list .task-list_title a {
                     position: absolute;
                     right: 0;
+                    font-size: 13px;
                 }
 
             .main-content .task-content .task-list .list-item {
@@ -208,6 +221,7 @@ ul li {
                         -ms-transform: rotate(45deg);
                         transform: rotate(45deg);
                     }
+
                     .main-content .task-content .task-list .list-item .task-status .is-assign:after {
                         left: 5px;
                         top: 1px;
@@ -219,14 +233,14 @@ ul li {
                         -ms-transform: rotate(45deg);
                         transform: rotate(45deg);
                     }
-                        /**/
-                        .main-content .task-content .task-list .list-item .task-status i {
-                            width: 80px;
-                            position: absolute;
-                            top: 8px;
-                            left: 56px;
-                            font-size: 12px;
-                        }
+                    /**/
+                    .main-content .task-content .task-list .list-item .task-status i {
+                        width: 80px;
+                        position: absolute;
+                        top: 8px;
+                        left: 56px;
+                        font-size: 12px;
+                    }
 
                     .main-content .task-content .task-list .list-item .task-status.s-isNull {
                         background: red;

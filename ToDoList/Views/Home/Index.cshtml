@@ -1,10 +1,44 @@
 ﻿@model ToDoList.Models.GroupsTasksViewModel
+@using Microsoft.AspNetCore.Html
 
 @{
     ViewData["Title"] = "List";
     var userOptionTasks = Model.Users
         .Select(x => new SelectListItem { Value = x.User.Id.ToString(), Text = x.User.Email })
         .ToList();
+
+    Func<bool?, IHtmlContent> MakeNoteThree =
+    @<li>
+        <h4>@(item == true ? "Private group:" : item == false ? "Public group:" : "")</h4>
+        @foreach (var groups in Model.GroupItems)
+        {
+            @if (groups.IsPrivate == item && (item == false || item == true))
+            {
+                <div>
+                    <a asp-action="Index"
+                       asp-route-id="@groups.Id"
+                       asp-controller="Home">
+                        @groups.Name
+                    </a>
+                    @if (groups.AdminUserId == ViewBag.UserId)
+                    {
+                        <a asp-action="EditGroup"
+                           asp-route-id="@groups.Id"
+                           asp-controller="Group"
+                           name="edit">
+                            edit
+                        </a>
+                    }
+                </div>
+            }
+            else if (groups.IsPrivate == item && item == null)
+            {
+                <div>
+                    <a asp-action="Index" asp-route-id="@groups.Id" asp-controller="Home">@groups.Name</a>
+                </div>
+            }
+        }
+    </li>;
 }
 
 @functions {
@@ -17,68 +51,14 @@
 <div class="main-content">
     <div class="nav-content">
         <div class="nav-btn">
-            <a asp-action="CreateGroup" asp-controller="Group" class="btn-a">New group</a>
+            <a asp-action="CreateGroup" asp-controller="Group" class="btn-a">Create group</a>
         </div>
         <ul>
-            <li>
-                @foreach (var groups in Model.GroupItems)
-                {
-                    if (groups.IsPrivate == null)
-                    {
-                        <div>
-                            <a asp-action="Index" asp-route-id="@groups.Id" asp-controller="Home">@groups.Name</a>
-                        </div>
-                    }
-                }
-            </li>
-            <li>
-                <h4>Private group:</h4>
-                @foreach (var groups in Model.GroupItems)
-                {
-                    if (groups.IsPrivate == true)
-                    {
-                        <div>
-                            <a asp-action="Index"
-                               asp-route-id="@groups.Id"
-                               asp-controller="Home">
-                                @groups.Name
-                            </a>
-                            @if (groups.AdminUserId == ViewBag.UserId)
-                            {
-                                <a asp-action="EditGroup"
-                                   asp-route-id="@groups.Id"
-                                   asp-controller="Group">
-                                    edit
-                                </a>
-                            }
-                        </div>
-                    }
-                }
-            </li>
-            <li>
-                <h4>Public group:</h4>
-                @foreach (var groups in Model.GroupItems)
-                {
-                    if (groups.IsPrivate == false)
-                    {
-                        <div>
-                            <a asp-action="Index"
-                               asp-route-id="@groups.Id"
-                               asp-controller="Home">
-                                @groups.Name
-                            </a>
-                            @if (groups.AdminUserId == ViewBag.UserId)
-                            {
-                                <a asp-action="EditGroup"
-                                   asp-route-id="@groups.Id"
-                                   asp-controller="Group">
-                                    edit
-                                </a>
-                            }
-                        </div>
-                    }
-                }
-            </li>
+            @MakeNoteThree(null)
+
+            @MakeNoteThree(true)
+
+            @MakeNoteThree(false)
         </ul>
     </div>
     <div class="task-content">
@@ -115,7 +95,7 @@
                         }
                         <i>@AssignCheck(@tasks.isAssign, "is done", "in process", "not assign")</i>
                     </label>
-
+                    
                     <span>@tasks.Title</span>
                     <div class="list-item__take">
                         <form class="@(tasks.isAssign == true ? "assignDisabled" : "")"
@@ -126,9 +106,7 @@
                                     @(tasks.isAssign == false ? tasks.Users.Email : tasks.isAssign == true ? tasks.Users.Email : "Assign user")
                                 </option>
                             </select>
-                            @*@if (tasks.isAssign != true)*@
-                            <input type="submit" class="btn-a" value="take" />
-
+                            <input type="submit" class="btn-a" value="assign" />
                         </form>
                     </div>
                     <div class="list-item-content">
@@ -184,34 +162,4 @@
         });
     </script>
 }
-
-
-@*<div class="new-task">
-        <form asp-antiforgery="true" asp-action="Create" asp-controller="Home" id="newTaskForm">
-            <input type="text" placeholder="Write your task title..." name="Title" />
-            <textarea placeholder="Write your text..." name="Text"></textarea>
-            <input type="text" name="ReleaseDate" value="@DateTime.Now" style="display:none" />
-
-            <input type="submit" class="add-task" value="Add new task" />
-        </form>
-    </div>
-    <div class="list-tasks">
-        @foreach (var item in Model)
-    {
-        <div class="list-item">
-            <h3>@item.Title</h3>
-
-            <div>
-                <i>@item.ReleaseDate</i>
-                <br />
-                <pre>@item.Text</pre>
-                <div class="list-item__link">
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </div>
-            </div>
-        </div>
-        }
-
-    </div>*@
 
