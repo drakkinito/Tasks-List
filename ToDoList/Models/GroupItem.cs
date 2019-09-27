@@ -7,7 +7,7 @@ namespace ToDoList.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public bool? IsPrivate { get; set; }
-        public string UserRole { get; set; }
+        public int AdminUserId { get; set; }
 
         public IEnumerable<UsersGroup> Users { get; set; }
 

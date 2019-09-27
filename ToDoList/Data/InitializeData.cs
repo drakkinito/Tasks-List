@@ -10,22 +10,9 @@ namespace ToDoList
     {
         public static void Initialize(ListContext context, User userData)
         {
-            var isUser = context.Users.Find(userData.Id);
-
-            //var groupCount = context.Groups.Count();
-            //var groupId = 0;
-            //if (groupCount != 0)
-            //{
-            //    groupId = context.Groups.LastOrDefault().Id + 1;
-            //}
-            //else
-            //{
-            //    groupId = 1;
-            //}
-
             if (userData != null)
             {
-                GroupItem groupDefault = new GroupItem() { IsPrivate = null, Name = "My task", UserRole = "Admin" };
+                GroupItem groupDefault = new GroupItem() { IsPrivate = null, Name = "My task", AdminUserId = userData.Id };
                 context.Groups.Add(groupDefault);
                 context.SaveChanges();
 

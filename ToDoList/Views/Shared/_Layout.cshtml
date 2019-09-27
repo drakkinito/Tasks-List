@@ -16,16 +16,17 @@
         <a asp-action="Index">
             <img src="https://www.gstatic.com/images/branding/product/1x/keep_48dp.png" alt="Alternate Text" />
         </a>
-        <a asp-action="Index">
+        <a asp-action="Index" asp-controller="Home"  asp-route-id="@ViewBag.MyGroupId">
             <h1 class="text-muted">Tasks List</h1>
         </a>
         <a asp-action="Logout" asp-controller="Account">
             Logout
         </a>
-        <form class="search" method="get">
-            @*<span class="icon-table-edit"></span>*@
-            @*<input type="text" name="Search" value="" placeholder="Search" class="def-color" />*@
-        </form>
+        <span>@ViewBag.UserEmail</span>
+        @*<form class="search" method="get">
+            <span class="icon-table-edit"></span>
+            <input type="text" name="Search" value="" placeholder="Search" class="def-color" />
+        </form>*@
 
     </header>
 
@@ -33,11 +34,10 @@
 
     <div class="container body-content">
         @RenderBody()
-
     </div>
-    @*<footer>
-            <p>&copy; 2019 - ToDoList</p>
-        </footer>*@
+    <footer>
+        <p>&copy; 2019 - ToDoList</p>
+    </footer>
     @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>*@
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 

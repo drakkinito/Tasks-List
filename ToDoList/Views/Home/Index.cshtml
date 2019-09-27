@@ -8,17 +8,14 @@
 }
 
 @functions {
-
     string AssignCheck(bool? assign, string isAssign, string process, string isNull)
     {
         return assign == true ? isAssign : assign == false ? process : isNull;
     }
-
 }
 
 <div class="main-content">
     <div class="nav-content">
-        @*@ViewData["UserEmail"]*@
         <div class="nav-btn">
             <a asp-action="CreateGroup" asp-controller="Group" class="btn-a">New group</a>
         </div>
@@ -28,9 +25,9 @@
                 {
                     if (groups.IsPrivate == null)
                     {
-                        <section>
+                        <div>
                             <a asp-action="Index" asp-route-id="@groups.Id" asp-controller="Home">@groups.Name</a>
-                        </section>
+                        </div>
                     }
                 }
             </li>
@@ -46,11 +43,14 @@
                                asp-controller="Home">
                                 @groups.Name
                             </a>
-                            <a asp-action="EditGroup"
-                               asp-route-id="@groups.Id"
-                               asp-controller="Group">
-                                @(groups.UserRole == "Admin" ? "edit" : "")
-                            </a>
+                            @if (groups.AdminUserId == ViewBag.UserId)
+                            {
+                                <a asp-action="EditGroup"
+                                   asp-route-id="@groups.Id"
+                                   asp-controller="Group">
+                                    edit
+                                </a>
+                            }
                         </div>
                     }
                 }
@@ -67,11 +67,14 @@
                                asp-controller="Home">
                                 @groups.Name
                             </a>
-                            <a asp-action="EditGroup"
-                               asp-route-id="@groups.Id"
-                               asp-controller="Group">
-                                edit
-                            </a>
+                            @if (groups.AdminUserId == ViewBag.UserId)
+                            {
+                                <a asp-action="EditGroup"
+                                   asp-route-id="@groups.Id"
+                                   asp-controller="Group">
+                                    edit
+                                </a>
+                            }
                         </div>
                     }
                 }
@@ -90,20 +93,42 @@
                 <div class="list-item">
                     <label class="task-status">
                         <input type="checkbox" checked="@tasks.isAssign">
-                        <a class="@AssignCheck(@tasks.isAssign, "checkmark s-assign", "checkmark s-process", "checkmark s-isNull")" asp-action="FinishTask" asp-controller="Home" asp-route-taskId="@tasks.Id"></a>
+                        @if (tasks.isAssign != null)
+                        {
+                            @if (tasks.UserId == ViewBag.UserId)
+                            {
+                                <a asp-action="FinishTask"
+                                   asp-controller="Home"
+                                   asp-route-taskId="@tasks.Id"
+                                   asp-route-groupId="@tasks.GroupItemId"
+                                   class="@AssignCheck(@tasks.isAssign, "checkmark s-assign", "checkmark s-process", "checkmark s-isNull")">
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="@AssignCheck(@tasks.isAssign, "checkmark s-assign", "checkmark s-process", "checkmark s-isNull") is-assign"></a>
+                            }
+                        }
+                        else
+                        {
+                            <a class="checkmark s-isNull"></a>
+                        }
                         <i>@AssignCheck(@tasks.isAssign, "is done", "in process", "not assign")</i>
                     </label>
 
                     <span>@tasks.Title</span>
                     <div class="list-item__take">
-                        <form asp-action="AddAssign" asp-controller="Home" asp-route-tasksId="@tasks.Id" id="assign" method="post">
+                        <form class="@(tasks.isAssign == true ? "assignDisabled" : "")"
+                              asp-action="AddAssign" asp-controller="Home" asp-route-tasksId="@tasks.Id" id="assign" method="post">
                             <select name="AssignUserId" asp-items="@userOptionTasks">
                                 <option selected="@(tasks.isAssign == null ? "" : tasks.isAssign == false ? "selected" : "")"
                                         disabled="@(tasks.isAssign == false || tasks.isAssign == true ? "disabled" : "")">
                                     @(tasks.isAssign == false ? tasks.Users.Email : tasks.isAssign == true ? tasks.Users.Email : "Assign user")
                                 </option>
                             </select>
+                            @*@if (tasks.isAssign != true)*@
                             <input type="submit" class="btn-a" value="take" />
+
                         </form>
                     </div>
                     <div class="list-item-content">
@@ -119,22 +144,26 @@
                 </div>
             }
         </div>
-        <div class="list-users">
-            <span>Members group:</span>
-            <ol>
-                @foreach (var u in Model.Users)
-                {
-                    <li>@u.User.Email</li>
-                }
-            </ol>
-            <form asp-action="AddUserForGroup" asp-controller="Home" method="post" id="addUser">
-                <label for="newUser">Add user:</label>
-                <input type="text" id="newUser" name="Name" placeholder="put down email user" value="@ViewBag.UserErrorName" />
-                <input type="text" name="GroupId" value="@ViewBag.GroupName.Id" class="hidden" />
-                <span>@ViewBag.UserErrorMessage</span>
-                <input type="submit" value="Add" />
-            </form>
-        </div>
+        @* members block *@
+        @if (!ViewBag.IsMytask)
+        {
+            <div class="list-users">
+                <span>Members group:</span>
+                <ol>
+                    @foreach (var u in Model.Users)
+                    {
+                        <li>@u.User.Email @(u.UserId == ViewBag.UserId ? " - A" : "")</li>
+                    }
+                </ol>
+                <form asp-action="AddUserForGroup" asp-controller="Home" method="post" id="addUser">
+                    <label for="newUser">Add user:</label>
+                    <input type="text" id="newUser" name="Name" placeholder="put down email user" value="@ViewBag.UserErrorName" />
+                    <input type="text" name="GroupId" value="@ViewBag.GroupName.Id" class="hidden" />
+                    <span>@ViewBag.UserErrorMessage</span>
+                    <input type="submit" value="Add" />
+                </form>
+            </div>
+        }
     </div>
 </div>
 

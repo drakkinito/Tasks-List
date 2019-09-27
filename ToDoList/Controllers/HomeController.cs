@@ -23,31 +23,26 @@ namespace ToDoList.Controllers
 
         [Authorize]
         //public async Task<IActionResult> Index(string Search)
-        public async Task<IActionResult> Index(int id, string[] message, int userId)
+        public async Task<IActionResult> Index(int id, string[] message)
         {
             HttpContext.Response.Cookies.Append("group_id", $"{id}");
-
 
             var groupItemsLoc = _context.UsersGroups
                         .Include(c => c.GroupItem)
                         .Where(p => p.UserId == UserId && p.GroupItem.IsPrivate != false)
                         .Select(x => new GroupItem
-                            {
+                        {
                             Name = x.GroupItem.Name,
                             Id = x.GroupItem.Id,
                             IsPrivate = x.GroupItem.IsPrivate,
-                            UserRole = x.GroupItem.UserRole })
+                            AdminUserId = x.GroupItem.AdminUserId
+                        })
                         .ToList();
 
             var groupItemsGlob = _context.Groups
                 .Where(x => x.IsPrivate == false)
-                .Select(x => new GroupItem { Name = x.Name, Id = x.Id, IsPrivate = x.IsPrivate })
+                .Select(x => new GroupItem { Name = x.Name, Id = x.Id, IsPrivate = x.IsPrivate, AdminUserId = x.AdminUserId })
                 .ToList();
-
-            var role = _context.UsersGroups
-                .Include(x => x.GroupItem)
-                .Where(x => x.UserId == UserId)
-                .Select(x => new GroupItem { UserRole = x.GroupItem.UserRole });
 
             var resultGroup = groupItemsLoc.Concat(groupItemsGlob);
 
@@ -55,9 +50,11 @@ namespace ToDoList.Controllers
                         .Include(x => x.User)
                         .Where(p => p.GroupItemId == id);
 
+            var groupAssagn = _context.Tasks.Include(x => x.GroupItem).Where(x => x.UserId == UserId);
+
             var groupName = _context.Groups.FirstOrDefault(x => x.Id == id);
 
-            User nameUser = _context.Users.FirstOrDefault(x => x.Id == UserId);
+            User userEmail = _context.Users.FirstOrDefault(x => x.Id == UserId);
 
             // check isMygoup
             var isMygroup = _context.Groups.FirstOrDefault(x => x.Name == "My task" && x.Id == id);
@@ -66,28 +63,20 @@ namespace ToDoList.Controllers
 
             if (isMygroup != null)
             {
-                taskItems = _context.Tasks.Include(x => x.Users).Where(y => y.UserId == UserId).ToList();
+                taskItems = _context.Tasks
+                    .Include(x => x.Users)
+                    .Where(y => y.UserId == UserId)
+                    .ToList();
             }
             else
             {
                 taskItems = _context.Tasks
                       .Include(x => x.Users)
                       .Where(p => p.GroupItemId == id)
-                      .OrderByDescending(x => x.Id).ToList();
+                      .OrderByDescending(x => x.Id)
+                      .ToList();
             }
 
-            if (id != 0)
-            {
-                //UsersGroup usersGroup = _context.UsersGroups.FirstOrDefault(x => x.GroupItemId == id);
-
-                //ViewData["GroupId"] = usersGroup.GroupItemId;
-            }
-
-            if (userId != 0)
-            {
-                //var assign = _context.Users.FirstOrDefault(x => x.Id == userId);
-                //ViewBag.AssignUser = assign.Email;
-            }
             // show message add user to group
             if (message.Length != 0 && message.Length >= 0)
             {
@@ -102,14 +91,11 @@ namespace ToDoList.Controllers
                 }
             }
 
-
-            var assignUser = _context.Tasks.Include(x => x.Users).FirstOrDefault(x => x.UserId == x.Users.Id);
-
-            //taskItems.Contains()
-
-            ViewData["UserEmail"] = nameUser.Email;
+            ViewBag.UserEmail = userEmail.Email;
             ViewBag.GroupName = groupName;
-            ////ViewBag.AssignUser = assignUser.Users.Email;
+            ViewBag.UserId = UserId;
+            ViewBag.IsMytask = isMygroup != null ? true : false;
+            ViewBag.MyGroupId = resultGroup.Where(x=> x.IsPrivate == null).Select(x => x.Id).ToArray()[0];
 
             return View(new GroupsTasksViewModel
             {
@@ -296,10 +282,8 @@ namespace ToDoList.Controllers
             return RedirectToAction("Index", "Home", new { id = groupId });
         }
 
-        public async Task<IActionResult> FinishTask(int taskId)
+        public async Task<IActionResult> FinishTask(int taskId, int groupId)
         {
-            string groupId = HttpContext.Request.Cookies["group_id"];
-
             if (taskId != 0)
             {
                 var statusAssignUser = _context.Tasks.FirstOrDefault(x => x.Id == taskId);
@@ -311,7 +295,7 @@ namespace ToDoList.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction("Index", "Home", new { id = 1 });
+            return RedirectToAction("Index", "Home", new { id = groupId });
         }
     }
 }

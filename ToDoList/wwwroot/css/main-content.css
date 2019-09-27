@@ -15,6 +15,11 @@ ul li {
     border-radius: 3px;
 }
 
+.assignDisabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
 .main-content {
     width: 900px;
     margin: 20px auto;
@@ -29,7 +34,7 @@ ul li {
     }
 
         .main-content .nav-content .nav-btn {
-            margin: 15px 10px;
+            margin: 15px;
         }
 
         .main-content .nav-content ul {
@@ -122,13 +127,14 @@ ul li {
                         width: 0;
                     }
 
+
+
                 .main-content .task-content .task-list .list-item .task-status {
                     position: absolute;
                     top: -5px;
                     left: -41px;
                     height: 20px;
                     width: 20px;
-
                     cursor: initial;
                 }
 
@@ -157,6 +163,10 @@ ul li {
                         background-color: red;
                         cursor: initial;
                     }
+
+                    .main-content .task-content .task-list .list-item .task-status .checkmark.is-assign {
+                        border: 2px solid #d6d6d6;
+                    }
                     /*.main-content .task-content .task-list .list-item .task-status:hover input ~ .checkmark {
                         background-color: #ccc;
                     }*/
@@ -166,10 +176,21 @@ ul li {
                         border: 2px solid forestgreen;
                     }
 
+
+                    .main-content .task-content .task-list .list-item .task-status input:checked ~ .is-assign {
+                        border: 2px solid #d6d6d6;
+                    }
+
                     .main-content .task-content .task-list .list-item .task-status .s-assign::after {
                         content: "";
                         position: absolute;
                         display: none;
+                    }
+
+                    .main-content .task-content .task-list .list-item .task-status .s-assign.is-assign::after {
+                        content: "";
+                        position: absolute;
+                        display: block;
                     }
 
                     .main-content .task-content .task-list .list-item .task-status input:checked ~ .s-assign:after {
@@ -187,14 +208,25 @@ ul li {
                         -ms-transform: rotate(45deg);
                         transform: rotate(45deg);
                     }
-                    /**/
-                    .main-content .task-content .task-list .list-item .task-status i {
-                        width: 80px;
-                        position: absolute;
-                        top: 8px;
-                        left: 56px;
-                        font-size: 12px;
+                    .main-content .task-content .task-list .list-item .task-status .is-assign:after {
+                        left: 5px;
+                        top: 1px;
+                        width: 4px;
+                        height: 9px;
+                        border: solid #d6d6d6;
+                        border-width: 0 3px 3px 0;
+                        -webkit-transform: rotate(45deg);
+                        -ms-transform: rotate(45deg);
+                        transform: rotate(45deg);
                     }
+                        /**/
+                        .main-content .task-content .task-list .list-item .task-status i {
+                            width: 80px;
+                            position: absolute;
+                            top: 8px;
+                            left: 56px;
+                            font-size: 12px;
+                        }
 
                     .main-content .task-content .task-list .list-item .task-status.s-isNull {
                         background: red;
@@ -330,7 +362,7 @@ ul li {
 
     .main-content .task-content .list-users ol {
         margin: 10px 0;
-        padding: 0 35px;
+        padding: 0 0px 0 35px;
         font-size: 14px;
         overflow-y: auto;
         max-height: 300px;

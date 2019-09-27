@@ -44,7 +44,7 @@ namespace ToDoList.Controllers
 
                 groupItem.Name = model.Name;
                 groupItem.IsPrivate = model.IsPrivate;
-                groupItem.UserRole = model.UserRole;
+                groupItem.AdminUserId = UserId;
 
                 if (model.Users != null)
                 {
@@ -100,8 +100,7 @@ namespace ToDoList.Controllers
                 {
                     Id = id,
                     Name = group.Name,
-                    IsPrivate = group.IsPrivate,
-                    UserRole = group.UserRole,
+                    IsPrivate = group.IsPrivate
                 });
             }
             return View();
@@ -137,8 +136,6 @@ namespace ToDoList.Controllers
                 groupItem.Users = newUsers;
                 groupItem.Name = model.Name;
                 groupItem.IsPrivate = model.IsPrivate;
-
-                groupItem.UserRole = model.UserRole;
 
                 // delete assign user from task
                 //var modelUsers = model.Users.ToArray();

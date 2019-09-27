@@ -32,6 +32,7 @@ header {
     background: aliceblue;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     border-bottom: 1px solid #fada81;
+    position: relative;
 }
 
     header img {
@@ -53,21 +54,32 @@ header {
     }
 
     header a:nth-child(3) {
-        float: right;
-        color: #80809e;
+        position: absolute;
+        top: 13px;
+        right: 15px;
+        padding: 7px 11px;
+        color: gray;
+        background-color: #fada81a1;
+        border-radius: 5px;
         font-size: medium;
         font-family: Arial;
-        padding: 11px;
         text-decoration: none;
-        border-radius: 5px;
-        margin: 14px 8px;
-        background-color: #fada81a1;
     }
-        header a:nth-child(3):hover {
-            color: #444444;
-            transition: .3s ease;
-            background: #fada81;
-        }
+
+    header span {
+        position: absolute;
+        right: 15px;
+        bottom: 5px;
+        font-size: 15px;
+        font-family: Arial;
+        color: grey;
+    }
+
+    header a:nth-child(3):hover {
+        color: #444444;
+        transition: .3s ease;
+        background: #fada81;
+    }
 
         header .search {
             position: relative;
@@ -296,11 +308,12 @@ header {
 
 
 footer {
-    position: relative;
+    position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     width: 100px;
+    height: 0;
     margin-left: auto;
     margin-right: auto;
     color: #545454;
